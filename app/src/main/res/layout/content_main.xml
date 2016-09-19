@@ -10,16 +10,25 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.ashwinirajagopal.locationnote.MainActivity"
-    android:background="#F9E79F"
+    android:background="#FCF3CF"
     tools:showIn="@layout/activity_main">
 
-    <ListView
-        android:id="@+id/android:list"
+
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gridview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"
+        android:columnWidth="150dp"
+        android:numColumns="auto_fit"
+        android:verticalSpacing="30dp"
+        android:horizontalSpacing="10dp"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+        android:clickable="true"
+        />
 
 
-    <ImageButton
+    <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="330dp"
@@ -28,10 +37,13 @@
         android:paddingRight="0dp"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
-        android:onClick="makeNote"
-        android:background="#F9E79F"
+        android:text="New Note"
+        android:background="#FCF3CF"
+        android:onClick="openEditor"
+        android:id="@+id/add_note"
         android:src="@drawable/note"
         />
+
 
 
 </RelativeLayout>

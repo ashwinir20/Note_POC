@@ -22,6 +22,8 @@ public class NotesContentProvider extends ContentProvider {
     private static final int NOTES = 1;
     private static final int NOTES_ID = 2;
 
+    public static final String CONTENT = "Note";
+
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -47,7 +49,7 @@ public class NotesContentProvider extends ContentProvider {
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
         return  database.query(DBHelper.TABLE_LOCATION_NOTE,DBHelper.COLUMNS,selection,null,null,null,
-                            DBHelper.NOTE_CREATED+"desc");
+                            DBHelper.NOTE_CREATED + " desc");
 
     }
 

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.app.LoaderManager;
 import android.widget.SimpleCursorAdapter;
@@ -22,6 +23,7 @@ import android.widget.GridView;
 import android.widget.CursorAdapter;
 import android.content.CursorLoader;
 import android.content.Loader;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>
@@ -39,11 +41,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        for(int i=0;i<4;i++) {
-
-            insertNote("Note"+i);
-        }
-
         Cursor cursor = getContentResolver().query(NotesContentProvider.CONTENT_URI,
                 DBHelper.COLUMNS,null,null,null,null);
 
@@ -52,9 +49,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         cursorAdapter = new SimpleCursorAdapter(this,android.R.layout.simple_list_item_1,cursor,text,columns,0);
 
-        GridView gridView = (GridView)findViewById(R.id.gridview);
+        ListView gridView = (ListView)findViewById(R.id.listView);
 
         gridView.setAdapter(cursorAdapter);
+
+
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+
+            @Override
+            public void onItemClick(AdapterView parent,View view,int pos, long id){
+
+                Intent intent = new Intent(MainActivity.this,EditorActivity.class);
+
+                //rpimary key of the selected item
+                Uri uri = Uri.parse(NotesContentProvider.CONTENT_URI + "/" + id);
+
+                intent.putExtra(NotesContentProvider.CONTENT,uri);
+
+                startActivityForResult(intent,EDITOR_REQUEST_CODE);
+            }
+        });
 
     }
 
@@ -99,6 +115,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         Intent intent = new Intent(this,EditorActivity.class);
 
         startActivityForResult(intent,EDITOR_REQUEST_CODE);
+
+    }
+
+    public void deleteNote(View view){
+
+        Toast.makeText(this,"Under Implementation!",Toast.LENGTH_SHORT).show();
+
 
     }
 

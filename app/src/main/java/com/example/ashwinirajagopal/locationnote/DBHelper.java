@@ -12,7 +12,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     //Constants for db name and version
     private static final String DATABASE_NAME = "locationote.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     //Constants for identifying table and columns
     public static final String TABLE_LOCATION_NOTE = "LocationNote";
@@ -49,7 +49,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        db.execSQL("DROP TABLE IF EXISTS"+TABLE_LOCATION_NOTE);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_LOCATION_NOTE);
         onCreate(db);
 
     }

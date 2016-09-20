@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:layout="@layout/activity_editor"
-
-
     >
 
     <EditText
@@ -19,6 +17,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:backgroundTint="#17202A"
+        android:hint="Type your note..."
+        android:background="#FDFEFE"
         />
 </RelativeLayout>

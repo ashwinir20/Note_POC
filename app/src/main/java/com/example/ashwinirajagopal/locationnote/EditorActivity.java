@@ -2,6 +2,7 @@ package com.example.ashwinirajagopal.locationnote;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -10,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.net.Uri;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class EditorActivity extends AppCompatActivity {
 
@@ -19,12 +21,20 @@ public class EditorActivity extends AppCompatActivity {
 
     private EditText editor;
 
+    private String noteFilter;
+
+    private String existingText;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         editor = (EditText) findViewById(R.id.editNote);
 
@@ -37,6 +47,21 @@ public class EditorActivity extends AppCompatActivity {
 
             action = Intent.ACTION_INSERT;
             setTitle(getString(R.string.new_note));
+
+        }else{
+
+            action = Intent.ACTION_EDIT;
+
+            noteFilter = DBHelper.ID + "=" + uri.getLastPathSegment();
+
+            Cursor cursor = getContentResolver().query(uri,DBHelper.COLUMNS,noteFilter,null,null);
+
+            cursor.moveToFirst();
+            existingText = cursor.getString(cursor.getColumnIndex(DBHelper.NOTE_TEXT));
+
+            editor.setText(existingText);
+
+            editor.requestFocus();
 
         }
 
@@ -55,6 +80,23 @@ public class EditorActivity extends AppCompatActivity {
 
     }
 
+    public void updateNote(String newText){
+
+        ContentValues values = new ContentValues();
+
+        //packaging
+        values.put(DBHelper.NOTE_TEXT,newText);
+
+        //update in DB
+        getContentResolver().update(NotesContentProvider.CONTENT_URI, values,noteFilter,null);
+
+        Toast.makeText(this,"Note Updated!",Toast.LENGTH_SHORT).show();
+
+        //reload activity
+        setResult(RESULT_OK);
+
+    }
+
     private void finishedEditing(){
 
         String newText = editor.getText().toString().trim();
@@ -69,6 +111,19 @@ public class EditorActivity extends AppCompatActivity {
                 else{
                     insertNote(newText);
             }
+                break;
+
+            case Intent.ACTION_EDIT:
+
+                if(newText.length() ==0){
+                    //
+                }
+                else if(newText.equals(existingText)){
+                    setResult(RESULT_CANCELED);
+                }
+                else{
+                    updateNote(newText);
+                }
         }
         finish();
     }

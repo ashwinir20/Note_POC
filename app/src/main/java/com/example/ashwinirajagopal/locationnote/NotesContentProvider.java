@@ -48,6 +48,12 @@ public class NotesContentProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 
+
+        if(uriMatcher.match(uri) == NOTES_ID){
+
+            selection= DBHelper.ID+ "=" +uri.getLastPathSegment();
+        }
+
         return  database.query(DBHelper.TABLE_LOCATION_NOTE,DBHelper.COLUMNS,selection,null,null,null,
                             DBHelper.NOTE_CREATED + " desc");
 
